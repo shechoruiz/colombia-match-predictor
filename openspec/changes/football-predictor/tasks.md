@@ -74,21 +74,21 @@ Chain strategy: stacked-to-main
 
 ## Slice S3a — Boundary + adapters + cache + budget (~260, Medium risk)
 
-- [ ] 3.1 Create `src/infrastructure/api-football/schemas.ts`: Zod `safeParse` schemas for teams, next fixture, last-N results.
-- [ ] 3.2 Create `src/infrastructure/api-football/client.ts`: fetch wrapper (env key, request options, error mapping).
-- [ ] 3.3 Create `src/infrastructure/api-football/repositories.ts`: maps API shapes → domain types; uses batched `fixtures?team&last=10&next=1`; surfaces typed failures.
-- [ ] 3.4 Create `src/infrastructure/cache/ttlCache.ts` + `cacheFirst.ts`: TTL windows (teams 24h, fixture+results 15min, crest 30d), serve fresh / fetch stale; decorated repo.
-- [ ] 3.5 Create `src/infrastructure/cache/dailyBudget.ts`: localStorage daily counter; <5 remaining → `ApiRateLimitError` (fail fast, no upstream).
-- [ ] 3.6 Create `src/infrastructure/thesportsdb/crestClient.ts`: crest lookup w/ default test key `'3'` + live fallback to placeholder.
-- [ ] 3.7 Create `src/test/handlers.ts` (MSW) covering success, 5xx, malformed payload.
-- [ ] 3.8 Tests: adapter integration (MSW), Zod rejects malformed payload, cache TTL + budget guard (RED→GREEN).
+- [x] 3.1 Create `src/infrastructure/api-football/schemas.ts`: Zod `safeParse` schemas for teams, next fixture, last-N results.
+- [x] 3.2 Create `src/infrastructure/api-football/client.ts`: fetch wrapper (env key, request options, error mapping).
+- [x] 3.3 Create `src/infrastructure/api-football/repositories.ts`: maps API shapes → domain types; uses batched `fixtures?team&last=10&next=1`; surfaces typed failures.
+- [x] 3.4 Create `src/infrastructure/cache/ttlCache.ts` + `cacheFirst.ts`: TTL windows (teams 24h, fixture+results 15min, crest 30d), serve fresh / fetch stale; decorated repo.
+- [x] 3.5 Create `src/infrastructure/cache/dailyBudget.ts`: localStorage daily counter; <5 remaining → `ApiRateLimitError` (fail fast, no upstream).
+- [x] 3.6 Create `src/infrastructure/thesportsdb/crestClient.ts`: crest lookup w/ default test key `'3'` + live fallback to placeholder.
+- [x] 3.7 Create `src/test/handlers.ts` (MSW) covering success, 5xx, malformed payload.
+- [x] 3.8 Tests: adapter integration (MSW), Zod rejects malformed payload, cache TTL + budget guard (RED→GREEN).
 
 ## Slice S3b — Mock source, DI, league smoke (~180, Low risk)
 
-- [ ] 3.9 Create `src/infrastructure/mock/data.ts` (fixtures/teams/results sample) + `source.ts` (mock repos implementing port).
-- [ ] 3.10 Create `src/application/data/ports.ts`: `TeamRepository` / `FixtureRepository` interface + create `src/application/useCases.ts`.
-- [ ] 3.11 Create `src/app/di.ts` source selection: key present→API-Football, else mock; UI layer untouched.
-- [ ] 3.12 Smoke task (runtime): verify league 239 + Apertura/Clausura naming returns teams (record result).
+- [x] 3.9 Create `src/infrastructure/mock/data.ts` (fixtures/teams/results sample) + `source.ts` (mock repos implementing port).
+- [x] 3.10 Create `src/application/data/ports.ts`: `TeamRepository` / `FixtureRepository` interface + create `src/application/useCases.ts`.
+- [x] 3.11 Create `src/app/di.ts` source selection: key present→API-Football, else mock; UI layer untouched.
+- [x] 3.12 Smoke task (runtime): verify league 239 + Apertura/Clausura naming returns teams (record result).
 
 ## Slice S4 — Store, UI screens, composition root (~250, Medium risk)
 
