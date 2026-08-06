@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Local env files — never commit real keys
+.env
+.env.local
+.env.*.local
+
+# Keep the template with placeholder names
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+# Vitest / coverage
+coverage/
+
+# Gentle AI SDD internal registry (agent tooling, not project source)
+.atl/
