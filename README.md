@@ -1,87 +1,119 @@
 # Colombia Match Predictor
 
-A portfolio web app that predicts Colombian football (Liga BetPlay DIMAYOR — Primera A) match outcomes from statistics. Pick a team's crest, see the next fixture, get an explainable 1X2 prediction in plain Spanish, and track whether your last 5 predictions hit.
+App web de portafolio que predice resultados del fútbol colombiano (Liga BetPlay DIMAYOR — Primera A) con estadísticas. Selecciona el escudo de un equipo, mira su próximo partido, obtén una predicción 1X2 explicable en español y comprueba si aciertan tus últimas 5 predicciones.
 
-**Live site:** https://colombia-match-predictor.netlify.app
+**Sitio en vivo:** https://colombia-match-predictor.netlify.app
 
-## Quick path
+## Stack
 
-1. `npm install`
-2. `npm run dev` — start the dev server
-3. `node scripts/manage-keys.mjs set API_FOOTBALL_KEY <key>` — optional, enables real data
-4. `npm test` / `npm run typecheck` — run the suite
-
-> Without an API key the app runs on the built-in mock source. Production deploys use mock by design — real keys are dev-only and never shipped.
-
-## What it does
-
-| Capability | Description |
-|---|---|
-| `fixtures-data` | Next fixture and recent finished results per team (Primera A only) |
-| `match-prediction` | 1X2 outcome with probability, shown in plain Spanish ("Gana Atlético Nacional (48%)"), powered by a Poisson + Elo hybrid |
-| `prediction-history` | Last 5 predictions validated against real full-time results, stored in `localStorage` (no accounts, no backend) |
-
-A prediction **hits** when the real full-time outcome matches the predicted one (1X2) — not the exact scoreline.
-
-## Tech stack
-
-| Layer | Choice |
-|---|---|
-| Framework | Vite + React 19 + TypeScript (strict) |
-| State | TanStack Query (server) · Zustand (global) · `useState` (UI) |
-| Styling | Tailwind CSS v4 (responsive screens built directly per the design; OpenPencil export tracked as future polish) |
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | React 19 + Vite + TypeScript (strict) |
+| Estado | TanStack Query (server) · Zustand (global) · `useState` (UI) |
+| Estilos | Tailwind CSS v4 |
 | Testing | Vitest + React Testing Library + MSW |
-| Data | API-Football (league id 239, dev-only key) · TheSportsDB (crests) |
-| Deploy | Netlify (continuous deployment: PR previews + production on `main` merge) |
+| Datos | API-Football (liga 239, key dev-only) · TheSportsDB (escudos) |
+| Validación | Zod |
+| Despliegue | Netlify (deploy continuo: vista previa por PR + producción en merge a `main`) |
 
-## Architecture
+## Progreso
 
-Clean, layer-separated — `domain/` (pure logic), `application/` (use cases, DI ports), `infrastructure/` (API adapters, cache, localStorage), `ui/` (presentation).
+| Fase | Estado | PR |
+|------|--------|----|
+| **1. Scafold & dominio** | ✅ Completo | PR 2 |
+| **2. Modelo de predicción** | ✅ Completo | PR 4 |
+| **3a. Adaptadores + caché** | ✅ Completo | PR 7–8 |
+| **3b. Fuente mock + DI** | ✅ Completo | PR 10 |
+| **4. UI responsive** | ✅ Completo | PR 13–14 |
+| **5. Historial + reconciliación** | ✅ Completo | PR 17–18 |
+| Fix (warnings de verify) | ✅ Completo | PR 20 |
+| **Consumo de dato real** | ⏳ Pendiente | — |
 
-Key decisions:
+## Arranque rápido
 
-- **Predictor:** simplified attack/defense Poisson grid + Elo/home-advantage factor → 1X2 probabilities. Deterministic and unit-testable.
-- **Rate limit (100 req/day):** cache-first with TTL windows (teams 24h, fixtures+results 15min, crests 30d) and a daily budget guard that fails fast before exhausting the quota.
-- **Validation:** Zod schemas at the boundary; typed domain errors (`ValidationError`, `ApiRateLimitError`).
-- **Security:** API keys are **never** prefixed `VITE_` (Vite only injects `VITE_*` into the public bundle), stored in gitignored `.env` with `0600` perms, and `scripts/manage-keys.mjs verify` checks no key leaks into `dist/`.
+```bash
+# Requisitos: Node 20+, npm 11+
 
-## Project standards
+# Instalar dependencias
+npm install
 
-This project follows a personal quality checklist (see `guia-practicas-esenciales`): names that explain intent, one responsibility per function, fail fast with typed errors, no `any`/`@ts-ignore`, DRY, separation of state types, pure components, explicit loading/error/empty states, and behavior (not implementation) tests.
+# Iniciar desarrollo (Vite)
+npm run dev
 
-## SDD progress
+# (Opcional) Configurar key de API-Football para datos reales
+node scripts/manage-keys.mjs set API_FOOTBALL_KEY <key>
+```
 
-The project is built with **SDD** (Spec-Driven Development). Artifacts live in `openspec/` and the persistent memory store.
+> Sin API key la app usa la fuente mock integrada. Los despliegues de producción usan mock por diseño — las keys reales son solo para desarrollo y nunca se publican en el bundle.
 
-| Phase | Status |
-|---|---|
-| Explore | ✅ Done — sources, prediction approach, stack compared |
-| Proposal | ✅ Done — MVP scope confirmed |
-| Spec | ✅ Done — `fixtures-data`, `match-prediction`, `prediction-history` |
-| Design | ✅ Done — layered architecture, cache/budget, delivery plan |
-| Tasks | ✅ Done — 20 tasks across 6 stacked slices |
-| Apply | ✅ Done — S1–S5 implemented (TDD strict) |
-| Verify | ✅ Done — 34/34 scenarios, 0 CRITICAL, PASS WITH WARNINGS |
-| Archive | ✅ Done — specs promoted to `openspec/specs/` |
+## Qué hace
 
-### Delivery slices (stacked-to-main)
+| Capacidad | Descripción |
+|-----------|-------------|
+| `fixtures` | Próximo fixture y resultados recientes por equipo (solo Primera A) |
+| `match-prediction` | Resultado 1X2 con probabilidad, explicado en español ("Gana Atlético Nacional (48%)"), con modelo híbrido Poisson + Elo |
+| `prediction-history` | Últimas 5 predicciones validadas contra los resultados reales al tiempo completo, guardadas en `localStorage` (sin cuentas, sin backend) |
 
-| Slice | Scope | Status |
-|---|---|---|
-| S1 | Scaffold, git, config, secure key manager, domain model | ✅ Merged (PR #2) |
-| S2 | Pure predictor model (strengths, Poisson, 1X2, Spanish labels) | ✅ Merged (PR #4) |
-| S3a | Boundary + adapters + cache + daily budget | ✅ Merged (PRs #7 / #8) |
-| S3b | Mock source, DI, league smoke check | ✅ Merged (PR #10) |
-| S4 | Store, UI screens, composition root | ✅ Merged (PRs #13 / #14) |
-| S5 | History + reconciliation + wiring | ✅ Merged (PRs #17 / #18) |
-| Fix | Reconcile feed order + keys:verify exit gate (verify warnings) | ✅ Merged (PR #20) |
+Una predicción **acierta** cuando el resultado real al tiempo completo coincide con el predicho (1X2) — no el marcador exacto.
 
-All 10 PRs merged to `main`. The change is archived under `openspec/changes/archive/2026-08-06-football-predictor/`, and the three capability specs are now the project baseline in `openspec/specs/`.
+## Arquitectura
 
-> **Real-data consumption (next):** production ships the built-in mock source by design. To exercise the real API-Football feed (league id 239), set `API_FOOTBALL_KEY` locally and run the documented smoke check (`docs/smoke-s3b.md`). A serverless proxy is the planned path to serve real data in production without leaking keys.
+Clean, separada por capas — `domain/` (lógica pura), `application/` (casos de uso, puertos DI), `infrastructure/` (adaptadores de API, caché, localStorage), `ui/` (presentación).
 
-## Development notes
+## Estructura
 
-- `openspec/` holds SDD artifacts — the archived change lives in `openspec/changes/archive/2026-08-06-football-predictor/`, and the baseline capability specs in `openspec/specs/`.
-- Commit convention: conventional commits, one reviewable work unit per commit.
-- Each PR must link an approved issue and carry exactly one `type:*` label.
+```
+src/
+├── domain/              # Tipos, errores, predictor y reconciliación (sin I/O)
+│   ├── football/        # model (Fixture, MatchResult), errors
+│   └── prediction/      # strengths, poisson, predictor, language (español)
+│   └── history/         # reconcile / countHistory (acierto hit/miss/pending)
+├── application/         # Casos de uso con inyección de dependencias
+│   ├── data/ports.ts    # TeamRepository, FixtureRepository
+│   ├── useCases.ts      # football
+│   └── historyUseCase.ts# recordPrediction, reconcileHistory, readHistory
+├── infrastructure/      # Adaptadores: API-Football, caché first, mock, TheSportsDB
+│   ├── api-football/    # Zod schemas, client, repositories, cache-first
+│   ├── cache/           # ttlCache, dailyBudget
+│   ├── mock/            # Fuente simulada (liga 239)
+│   ├── thesportsdb/     # crestClient
+│   └── historyRepository.ts  # localStorage (corrupt-safe, dedupe)
+├── ui/                  # Presentación React + Tailwind
+│   ├── TeamGrid, TeamCard, NextMatchCard, PredictionPanel, HistorySection
+│   └── hooks/           # useTeams, useFixtures, usePrediction, useHistory
+├── app/                 # Composition root: App, queryClient, selección de fuente
+└── store/               # Zustand: selección de equipo
+```
+
+## Capacidades implementadas
+
+- [x] **Catálogo de equipos** — escudos con grid responsive 2/4/6 columnas; estados cargando / error + reintentar / vacío
+- [x] **Predicción 1X2** — modelo determinista Poisson + Elo con salida en español natural (nunca notación cruda 1X2)
+- [x] **Fuente de datos configurable** — con key usa API-Football; sin key usa la fuente simulada (liga 239)
+- [x] **Límite de cuota (100 req/día)** — caché-first con ventanas TTL (equipos 24h, fixtures+resultados 15min, escudos 30d) y guard de presupuesto diario que falla rápido
+- [x] **Validación y errores tipados** — Zod en el borde; `ValidationError`, `ApiRateLimitError`
+- [x] **Historial** — predice acertar/no/aciertar/pendiente de las últimas 5, con `H/(H+M)`; usa `localStorage` a prueba de corrupción
+- [x] **Flujo responsive completo** — grid → selección → panel de predicción → historial
+
+## Seguridad (claves API)
+
+Las claves nunca llevan prefijo `VITE_` (Vite solo inyecta en el bundle público las `VITE_*`), se guardan en `.env` ignorado en git con permisos `0600`, y `scripts/manage-keys.mjs verify` comprueba que ninguna clave se filtre en `dist/` (sale con código ≠ 0 si algo falla).
+
+## Estándares del proyecto
+
+Sigue una checklist personal (ver `guia-practicas-esenciales`): nombres que explican la intención, una responsabilidad por función, fallo rápido con errores tipados, sin `any`/`@ts-ignore`, DRY, separación de tipos de estado, componentes puros, estados explícitos de carga/error/vacío y tests de comportamiento (no de implementación).
+
+## Comandos de calidad
+
+```bash
+npm test        # vitest
+npm run typecheck  # TypeScript (strict)
+npm run build      # tsc + vite build (validación real del frontend)
+npm run keys:verify  # comprueba que no haya fugas de claves en dist/
+```
+
+## Notas de desarrollo
+
+- `openspec/` guarda los artefactos SDD — el change archivado está en `openspec/changes/archive/2026-08-06-football-predictor/` y las specs de capacidad base en `openspec/specs/`.
+- Convención de commits: conventional commits, una unidad de trabajo revisable por commit.
+- Cada PR debe enlazar un issue aprobado y llevar exactamente una etiqueta `type:*`.
