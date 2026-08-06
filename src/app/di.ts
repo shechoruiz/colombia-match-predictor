@@ -5,12 +5,14 @@
  * the application use cases, so swapping sources never touches it.
  */
 import { createFootballUseCases, type FootballUseCases } from '../application/useCases'
+import { createHistoryUseCases, type HistoryUseCases } from '../application/historyUseCase'
 import { createApiFootballClient } from '../infrastructure/api-football/client'
 import { createCachedFootballRepository } from '../infrastructure/api-football/cachedRepository'
 import { createApiFootballRepository } from '../infrastructure/api-football/repositories'
 import { createDailyBudget, type DailyBudget } from '../infrastructure/cache/dailyBudget'
 import { createTtlCache } from '../infrastructure/cache/ttlCache'
 import { loadApiConfig, type ApiConfig } from '../infrastructure/config'
+import { createHistoryRepository } from '../infrastructure/historyRepository'
 import { createMockSource } from '../infrastructure/mock/source'
 
 export type DataSourceKind = 'api-football' | 'mock'
@@ -23,6 +25,7 @@ export function selectDataSourceKind(config: ApiConfig): DataSourceKind {
 export interface AppDataSources {
   kind: DataSourceKind
   useCases: FootballUseCases
+  history: HistoryUseCases
 }
 
 export function createDataSources(config: ApiConfig = loadApiConfig()): AppDataSources {
@@ -33,6 +36,10 @@ export function createDataSources(config: ApiConfig = loadApiConfig()): AppDataS
   return {
     kind: 'mock',
     useCases: createFootballUseCases({ teams: mock.teams, fixtures: mock.fixtures }),
+    history: createHistoryUseCases({
+      history: defaultHistoryRepository(),
+      fixtures: mock.fixtures,
+    }),
   }
 }
 
@@ -43,9 +50,14 @@ function createApiFootballSources(config: ApiConfig): AppDataSources {
   return {
     kind: 'api-football',
     useCases: createFootballUseCases({ teams: cached, fixtures: cached }),
+    history: createHistoryUseCases({ history: defaultHistoryRepository(), fixtures: cached }),
   }
 }
 
 function defaultDailyBudget(): DailyBudget {
   return createDailyBudget({ storage: localStorage })
+}
+
+function defaultHistoryRepository() {
+  return createHistoryRepository({ storage: localStorage })
 }

@@ -15,10 +15,12 @@ if (rootElement === null) {
   throw new Error('Root element #root not found in index.html')
 }
 
+const dataSources = createDataSources()
+
 createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App useCases={createDataSources().useCases} />
+      <App useCases={dataSources.useCases} history={dataSources.history} />
     </QueryClientProvider>
   </StrictMode>,
 )
