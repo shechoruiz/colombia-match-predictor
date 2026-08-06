@@ -29,3 +29,6 @@ coverage/
 
 # Gentle AI SDD internal registry (agent tooling, not project source)
 .atl/
+
+# Local Netlify folder
+.netlify
