@@ -32,3 +32,6 @@ coverage/
 
 # Local Netlify folder
 .netlify
+
+# CodeGraph local index (not project source)
+.codegraph/
