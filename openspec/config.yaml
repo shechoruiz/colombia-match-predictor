@@ -1,0 +1,36 @@
+schema: spec-driven
+
+context: |
+  Tech stack: TBD — empty repo, not git yet. Goal: React web app predicting
+    Colombian football matches (pick team crest, view next fixture, statistical
+    winner prediction, validate prior 5 predictions). Node v24.16.0 / npm / pnpm
+    available in the environment.
+  Architecture: TBD (proposal/design phases)
+  Testing: none detected yet (no committed runner) — strict_tdd disabled until a
+    runner is defined
+  Style: TBD
+  Persistence: hybrid (OpenSpec in repo + Engram)
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    guidelines:
+      - Follow existing code patterns
+    tdd: true            # runner added (vitest) in S1 — strict RED-GREEN-REFACTOR
+    test_command: "vitest run"   # runner configured in S1
+  verify:
+    test_command: "vitest run"   # runner configured in S1
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
