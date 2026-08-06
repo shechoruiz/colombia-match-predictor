@@ -92,13 +92,13 @@ Chain strategy: stacked-to-main
 
 ## Slice S4 — Store, UI screens, composition root (~250, Medium risk)
 
-- [ ] 4.1 Create `src/store/teamSelection.ts` (Zustand store: `selectedTeamId` + setter).
-- [ ] 4.2 Recreate `src/ui/TeamGrid` + `TeamCard` from OpenPencil export; responsive 2/4/6 cols + loading/error/empty; tell each updates hooks.
-- [ ] 4.3 `src/ui/NextMatchCard`: next/fixture display; no-fixture empty state; Spanish dates.
-- [ ] 4.4 `src/ui/PredictionPanel`: probability bars, scoreline, natural Spanish + rationale; skeleton + error+retry.
-- [ ] 4.5 `src/ui/hooks/useFixtures.ts`: TanStack Query wiring (next fixture + recent results) with cache refetch windows.
-- [ ] 4.6 `src/app/{main,App}.tsx` + `queryClient.ts`: composition root, render flow grid→select→panel.
-- [ ] 4.7 Component tests (RTL): loading, error+retry, empty for TeamGrid / PredictionPanel.
+- [x] 4.1 Create `src/store/teamSelection.ts` (Zustand store: `selectedTeamId` + setter).
+- [x] 4.2 Recreate `src/ui/TeamGrid` + `TeamCard` from OpenPencil export; responsive 2/4/6 cols + loading/error/empty; tell each updates hooks.
+- [x] 4.3 `src/ui/NextMatchCard`: next/fixture display; no-fixture empty state; Spanish dates.
+- [x] 4.4 `src/ui/PredictionPanel`: probability bars, scoreline, natural Spanish + rationale; skeleton + error+retry.
+- [x] 4.5 `src/ui/hooks/useFixtures.ts`: TanStack Query wiring (next fixture + recent results) with cache refetch windows.
+- [x] 4.6 `src/app/{main,App}.tsx` + `queryClient.ts`: composition root, render flow grid→select→panel.
+- [x] 4.7 Component tests (RTL): loading, error+retry, empty for TeamGrid / PredictionPanel.
 
 ## Slice S5 — History + reconciliation + polish (~220, Low risk)
 
