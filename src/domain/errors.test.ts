@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ApiRateLimitError, DomainError, ValidationError } from './errors'
+import { ApiError, ApiRateLimitError, DomainError, ValidationError } from './errors'
 
 describe('DomainError hierarchy', () => {
   it('ValidationError is a DomainError with its typed code', () => {
@@ -15,5 +15,12 @@ describe('DomainError hierarchy', () => {
     expect(error).toBeInstanceOf(DomainError)
     expect(error.code).toBe('RATE_LIMIT_ERROR')
     expect(error.name).toBe('ApiRateLimitError')
+  })
+
+  it('ApiError is a DomainError with its typed code', () => {
+    const error = new ApiError('upstream request failed')
+    expect(error).toBeInstanceOf(DomainError)
+    expect(error.code).toBe('API_ERROR')
+    expect(error.name).toBe('ApiError')
   })
 })

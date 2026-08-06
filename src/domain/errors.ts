@@ -4,7 +4,7 @@
  */
 
 /** Discriminator used by the presentation layer to pick the right state. */
-export type ErrorCode = 'VALIDATION_ERROR' | 'RATE_LIMIT_ERROR'
+export type ErrorCode = 'VALIDATION_ERROR' | 'RATE_LIMIT_ERROR' | 'API_ERROR'
 
 export abstract class DomainError extends Error {
   abstract readonly code: ErrorCode
@@ -24,4 +24,9 @@ export class ValidationError extends DomainError {
 /** Raised when the daily upstream call budget is exhausted. No upstream call is made. */
 export class ApiRateLimitError extends DomainError {
   readonly code = 'RATE_LIMIT_ERROR' as const
+}
+
+/** Raised when an upstream HTTP call fails (5xx, network) — not a domain defect. */
+export class ApiError extends DomainError {
+  readonly code = 'API_ERROR' as const
 }
