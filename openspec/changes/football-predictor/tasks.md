@@ -102,12 +102,12 @@ Chain strategy: stacked-to-main
 
 ## Slice S5 — History + reconciliation + polish (~220, Low risk)
 
-- [ ] 5.1 Create `src/domain/history/reconcile.ts`: mark hit/miss/pending vs last-5 FINISHED; `pending` & out-of-window excluded; pure.
-- [ ] 5.2 Create `src/infrastructure/historyRepository.ts`: localStorage persist / corrupt-safe restore / dedupe by fixtureId.
-- [ ] 5.3 Create `src/application/historyUseCase.ts`: `recordPrediction`, `reconcileHistory` (DI repos).
-- [ ] 5.4 Create `src/ui/HistorySection`: hit/miss/pending badges + `H/(H+M)`; loading/error/empty; responsive.
-- [ ] 5.5 Wire History into app + run-end history re-concile on results load.
-- [ ] 5.6 Unit tests reconcile (hit/miss/pending/out-of-window/no-finished/corrupt) + component test HistorySection empty/error.
+- [x] 5.1 Create `src/domain/history/reconcile.ts`: mark hit/miss/pending vs last-5 FINISHED; `pending` & out-of-window excluded; pure.
+- [x] 5.2 Create `src/infrastructure/historyRepository.ts`: localStorage persist / corrupt-safe restore / dedupe by fixtureId.
+- [x] 5.3 Create `src/application/historyUseCase.ts`: `recordPrediction`, `reconcileHistory` (DI repos).
+- [x] 5.4 Create `src/ui/HistorySection`: hit/miss/pending badges + `H/(H+M)`; loading/error/empty; responsive.
+- [x] 5.5 Wire History into app + run-end history re-concile on results load.
+- [x] 5.6 Unit tests reconcile (hit/miss/pending/out-of-window/no-finished/corrupt) + component test HistorySection empty/error.
 
 ## Verification Per Slice
 
