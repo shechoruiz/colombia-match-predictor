@@ -4,9 +4,7 @@ import { ApiError, ValidationError } from '../../domain/errors'
 import {
   API_FOOTBALL_URL,
   finishedOnlyPayload,
-  fixturesPayload,
   scheduledOnlyPayload,
-  teamsPayload,
 } from '../../test/handlers'
 import { server } from '../../test/server'
 import { createApiFootballClient } from './client'
