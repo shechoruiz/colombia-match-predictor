@@ -1,0 +1,14 @@
+# Netlify deployment configuration
+# Continuous deployment: every PR creates a deploy preview; every merge to main
+# deploys the production site. No env vars required — production serves the mock
+# source by design (API keys are dev-only, never bundled).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA fallback: let Vite client-side routing handle deep links.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
