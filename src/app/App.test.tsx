@@ -55,8 +55,8 @@ function createUseCases(overrides?: Partial<FootballUseCases>): FootballUseCases
       status: 'SCHEDULED' as const,
     })),
     getRecentResults: vi.fn(async () => [
-      { fixtureId: '6001', homeGoals: 3, awayGoals: 1, outcome: '1' as const },
-      { fixtureId: '6002', homeGoals: 2, awayGoals: 0, outcome: '1' as const },
+      { fixtureId: '6001', kickoffUtc: '2026-07-12T23:00:00Z', homeGoals: 3, awayGoals: 1, outcome: '1' as const },
+      { fixtureId: '6002', kickoffUtc: '2026-07-13T21:00:00Z', homeGoals: 2, awayGoals: 0, outcome: '1' as const },
     ]),
     ...overrides,
   }

@@ -85,6 +85,7 @@ export function toDomainResult(item: FixtureApiItem): MatchResult {
   }
   return {
     fixtureId: String(item.fixture.id),
+    kickoffUtc: item.fixture.date,
     homeGoals: home,
     awayGoals: away,
     outcome: outcomeFromGoals(home, away),

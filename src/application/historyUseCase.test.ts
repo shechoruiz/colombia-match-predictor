@@ -90,8 +90,8 @@ describe('createHistoryUseCases', () => {
     repo.upsert(record('f1', '1'))
     repo.upsert(record('f2', 'X'))
     const results: MatchResult[] = [
-      { fixtureId: 'f1', homeGoals: 2, awayGoals: 1, outcome: '1' },
-      { fixtureId: 'f2', homeGoals: 2, awayGoals: 1, outcome: '1' },
+      { fixtureId: 'f1', kickoffUtc: '2026-08-01T20:00:00Z', homeGoals: 2, awayGoals: 1, outcome: '1' },
+      { fixtureId: 'f2', kickoffUtc: '2026-08-02T20:00:00Z', homeGoals: 2, awayGoals: 1, outcome: '1' },
     ]
     const useCases = createHistoryUseCases({
       history: repo,

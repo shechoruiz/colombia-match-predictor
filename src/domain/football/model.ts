@@ -28,6 +28,7 @@ export interface Fixture {
 
 export interface MatchResult {
   fixtureId: string
+  kickoffUtc: string
   homeGoals: number
   awayGoals: number
   outcome: Outcome1X2

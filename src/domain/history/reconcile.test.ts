@@ -24,8 +24,12 @@ function record(
   }
 }
 
-function result(fixtureId: string, outcome: MatchResult['outcome']): MatchResult {
-  return { fixtureId, homeGoals: 2, awayGoals: 1, outcome }
+function result(
+  fixtureId: string,
+  outcome: MatchResult['outcome'],
+  kickoffUtc = '2026-08-01T20:00:00Z',
+): MatchResult {
+  return { fixtureId, homeGoals: 2, awayGoals: 1, outcome, kickoffUtc }
 }
 
 describe('reconcileRecords', () => {
@@ -70,6 +74,20 @@ describe('reconcileRecords', () => {
       results,
     )
     expect(reconciled.map((r) => r.status)).toEqual(['hit', 'hit', 'pending'])
+  })
+
+  it('normalizes a newest-first feed: window is the 5 most recent by kickoffUtc', () => {
+    const newestFirst = [
+      result('f6', '1', '2026-08-06T20:00:00Z'),
+      result('f5', '1', '2026-08-05T20:00:00Z'),
+      result('f4', '2', '2026-08-04T20:00:00Z'),
+      result('f3', 'X', '2026-08-03T20:00:00Z'),
+      result('f2', '1', '2026-08-02T20:00:00Z'),
+      result('f1', '2', '2026-08-01T20:00:00Z'),
+      result('f0', '1', '2026-07-31T20:00:00Z'),
+    ]
+    const reconciled = reconcileRecords([record('f0', '1'), record('f2', '1'), record('f1', '2')], newestFirst)
+    expect(reconciled.map((r) => r.status)).toEqual(['pending', 'hit', 'pending'])
   })
 })
 

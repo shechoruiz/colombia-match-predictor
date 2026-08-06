@@ -17,7 +17,7 @@ const NEXT_FIXTURE: Fixture = {
 }
 
 const RESULTS: MatchResult[] = [
-  { fixtureId: '6001', homeGoals: 2, awayGoals: 1, outcome: '1' },
+  { fixtureId: '6001', kickoffUtc: '2026-07-12T23:00:00Z', homeGoals: 2, awayGoals: 1, outcome: '1' },
 ]
 
 function stubTeamRepository(teams: Team[]): TeamRepository {

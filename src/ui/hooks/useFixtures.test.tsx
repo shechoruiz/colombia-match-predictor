@@ -33,7 +33,7 @@ function createUseCases(overrides?: Partial<FootballUseCases>): FootballUseCases
     ),
     getRecentResults: vi.fn(async (teamId) =>
       teamId === '2893'
-        ? [{ fixtureId: '6001', homeGoals: 2, awayGoals: 1, outcome: '1' as const }]
+        ? [{ fixtureId: '6001', kickoffUtc: '2026-07-12T23:00:00Z', homeGoals: 2, awayGoals: 1, outcome: '1' as const }]
         : [],
     ),
     ...overrides,
