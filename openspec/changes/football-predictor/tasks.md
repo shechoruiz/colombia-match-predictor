@@ -65,12 +65,12 @@ Chain strategy: stacked-to-main
 
 ## Slice S2 — Pure predictor model + tests (~230, Low risk)
 
-- [ ] 2.1 Create `src/domain/prediction/strengths.ts`: `eloFactor(Δelo)` + `computeStrengths` (attack/defense from recent results), pure, no I/O.
-- [ ] 2.2 Create `src/domain/prediction/poisson.ts`: builds 7×7 independent-Poisson grid (goals 0–6) from lambdas, returns P1/PX/P2, renormalized, tolerance 1e-9.
-- [ ] 2.3 Create `src/domain/prediction/predictor.ts`: `computePrediction(input)` hoisting strengths→lambda→probabilities→argmax scoreline; fail fast `ValidationError` on missing inputs.
-- [ ] 2.4 Create `src/domain/prediction/language.ts`: Spanish labels "Gana {name} ({pct}%)" / "Empate ({pct}%)"; tie-within-tolerance outputs "Empate".
-- [ ] 2.5 Tests: `predictor.test.ts` (sum=1, determinism, home advantage, isolated tie behavior, scoreline-outcome coherence, Spanish string shapes).
-- [ ] 2.6 Test: missing inputs raise typed `ValidationError`, never fabricated probs.
+- [x] 2.1 Create `src/domain/prediction/strengths.ts`: `eloFactor(Δelo)` + `computeStrengths` (attack/defense from recent results), pure, no I/O.
+- [x] 2.2 Create `src/domain/prediction/poisson.ts`: builds 7×7 independent-Poisson grid (goals 0–6) from lambdas, returns P1/PX/P2, renormalized, tolerance 1e-9.
+- [x] 2.3 Create `src/domain/prediction/predictor.ts`: `computePrediction(input)` hoisting strengths→lambda→probabilities→argmax scoreline; fail fast `ValidationError` on missing inputs.
+- [x] 2.4 Create `src/domain/prediction/language.ts`: Spanish labels "Gana {name} ({pct}%)" / "Empate ({pct}%)"; tie-within-tolerance outputs "Empate".
+- [x] 2.5 Tests: `predictor.test.ts` (sum=1, determinism, home advantage, isolated tie behavior, scoreline-outcome coherence, Spanish string shapes).
+- [x] 2.6 Test: missing inputs raise typed `ValidationError`, never fabricated probs.
 
 ## Slice S3a — Boundary + adapters + cache + budget (~260, Medium risk)
 
