@@ -29,7 +29,7 @@ A prediction **hits** when the real full-time outcome matches the predicted one 
 |---|---|
 | Framework | Vite + React 19 + TypeScript (strict) |
 | State | TanStack Query (server) · Zustand (global) · `useState` (UI) |
-| Styling | Tailwind CSS v4 (screens designed with OpenPencil, exported to React + Tailwind) |
+| Styling | Tailwind CSS v4 (responsive screens built directly per the design; OpenPencil export tracked as future polish) |
 | Testing | Vitest + React Testing Library + MSW |
 | Data | API-Football (league id 239, dev-only key) · TheSportsDB (crests) |
 | Deploy | Netlify (continuous deployment: PR previews + production on `main` merge) |
@@ -59,24 +59,29 @@ The project is built with **SDD** (Spec-Driven Development). Artifacts live in `
 | Proposal | ✅ Done — MVP scope confirmed |
 | Spec | ✅ Done — `fixtures-data`, `match-prediction`, `prediction-history` |
 | Design | ✅ Done — layered architecture, cache/budget, delivery plan |
-| Tasks | ✅ Done — 20 tasks, 6 stacked PRs |
-| Apply | 🔄 In progress — **S1 complete** (scaffold + key manager + domain) |
-| Verify | ⏳ Pending |
-| Archive | ⏳ Pending |
+| Tasks | ✅ Done — 20 tasks across 6 stacked slices |
+| Apply | ✅ Done — S1–S5 implemented (TDD strict) |
+| Verify | ✅ Done — 34/34 scenarios, 0 CRITICAL, PASS WITH WARNINGS |
+| Archive | ✅ Done — specs promoted to `openspec/specs/` |
 
 ### Delivery slices (stacked-to-main)
 
 | Slice | Scope | Status |
 |---|---|---|
-| S1 | Scaffold, git, config, secure key manager, domain model | ✅ Done (PR #1) |
-| S2 | Pure predictor model (strengths, Poisson, 1X2, Spanish labels) | 🔄 Next |
-| S3a | Boundary + adapters + cache + daily budget | ⏳ |
-| S3b | Mock source, DI, league smoke check | ⏳ |
-| S4 | Store, UI screens (OpenPencil export), composition root | ⏳ |
-| S5 | History + reconciliation + polish | ⏳ |
+| S1 | Scaffold, git, config, secure key manager, domain model | ✅ Merged (PR #2) |
+| S2 | Pure predictor model (strengths, Poisson, 1X2, Spanish labels) | ✅ Merged (PR #4) |
+| S3a | Boundary + adapters + cache + daily budget | ✅ Merged (PRs #7 / #8) |
+| S3b | Mock source, DI, league smoke check | ✅ Merged (PR #10) |
+| S4 | Store, UI screens, composition root | ✅ Merged (PRs #13 / #14) |
+| S5 | History + reconciliation + wiring | ✅ Merged (PRs #17 / #18) |
+| Fix | Reconcile feed order + keys:verify exit gate (verify warnings) | ✅ Merged (PR #20) |
+
+All 10 PRs merged to `main`. The change is archived under `openspec/changes/archive/2026-08-06-football-predictor/`, and the three capability specs are now the project baseline in `openspec/specs/`.
+
+> **Real-data consumption (next):** production ships the built-in mock source by design. To exercise the real API-Football feed (league id 239), set `API_FOOTBALL_KEY` locally and run the documented smoke check (`docs/smoke-s3b.md`). A serverless proxy is the planned path to serve real data in production without leaking keys.
 
 ## Development notes
 
-- `openspec/` holds SDD artifacts (proposal, specs, design, tasks) — see `openspec/changes/football-predictor/`.
+- `openspec/` holds SDD artifacts — the archived change lives in `openspec/changes/archive/2026-08-06-football-predictor/`, and the baseline capability specs in `openspec/specs/`.
 - Commit convention: conventional commits, one reviewable work unit per commit.
 - Each PR must link an approved issue and carry exactly one `type:*` label.
