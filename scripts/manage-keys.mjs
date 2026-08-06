@@ -156,6 +156,7 @@ async function cmdVerify() {
   const missing = REQUIRED_KEYS.filter((k) => !present.includes(k))
   for (const key of present) console.log(`verify: PRESENT  ${key}`)
   for (const key of missing) console.log(`verify: MISSING  ${key}`)
+  if (missing.length > 0) process.exitCode = 1
   for (const key of present) await assertKeyValueNotInDist(entries.get(key) ?? '')
   console.log('verify: no key value leaked into dist/.')
   console.log('verify: done.')

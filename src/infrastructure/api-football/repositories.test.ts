@@ -32,7 +32,7 @@ describe('createApiFootballRepository (MSW integration)', () => {
       kickoffUtc: '2026-08-16T22:00:00Z',
       status: 'SCHEDULED',
     })
-    expect(results).toEqual([{ fixtureId: '1001', homeGoals: 2, awayGoals: 1, outcome: '1' }])
+    expect(results).toEqual([{ fixtureId: '1001', kickoffUtc: '2026-08-10T20:00:00Z', homeGoals: 2, awayGoals: 1, outcome: '1' }])
   })
 
   it('returns a null next fixture when no match remains scheduled', async () => {

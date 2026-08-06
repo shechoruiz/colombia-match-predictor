@@ -18,15 +18,19 @@ function reconcileOne(record: PredictionRecord, outcome: MatchResult['outcome'])
 }
 
 /**
- * Takes a feed of FINISHED results (oldest → newest order) and returns a copy
- * of `records` with each `status` updated. Records whose fixture is not inside
- * the last-5 window keep `pending`.
+ * Takes a feed of FINISHED results (any order; the real API and the MSW
+ * handlers arrive newest-first) and returns a copy of `records` with each
+ * `status` updated. The feed is normalized internally by ascending
+ * `kickoffUtc` before the last-5 window is taken, so the caller never depends
+ * on feed order. Records whose fixture is not inside the window keep
+ * `pending`.
  */
 export function reconcileRecords(
   records: readonly PredictionRecord[],
   finishedResults: readonly MatchResult[],
 ): PredictionRecord[] {
-  const window = finishedResults.slice(-RECONCILE_WINDOW_SIZE)
+  const sorted = [...finishedResults].sort((a, b) => a.kickoffUtc.localeCompare(b.kickoffUtc))
+  const window = sorted.slice(-RECONCILE_WINDOW_SIZE)
   const outcomeById = new Map(window.map((r) => [r.fixtureId, r.outcome]))
   return records.map((record) => {
     const outcome = outcomeById.get(record.fixtureId)

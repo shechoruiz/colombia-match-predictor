@@ -23,8 +23,8 @@ function createWrapper(client: QueryClient): (props: { children: ReactNode }) =>
 
 function results(overrides: Partial<MatchResult> = {}): MatchResult[] {
   return [
-    { fixtureId: '6001', homeGoals: 3, awayGoals: 1, outcome: '1', ...overrides },
-    { fixtureId: '6002', homeGoals: 2, awayGoals: 1, outcome: '1', ...overrides },
+    { fixtureId: '6001', kickoffUtc: '2026-07-12T23:00:00Z', homeGoals: 3, awayGoals: 1, outcome: '1', ...overrides },
+    { fixtureId: '6002', kickoffUtc: '2026-07-13T21:00:00Z', homeGoals: 2, awayGoals: 1, outcome: '1', ...overrides },
   ]
 }
 

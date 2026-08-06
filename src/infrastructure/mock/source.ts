@@ -45,6 +45,7 @@ function toMockResult(record: MockFixtureRecord): MatchResult {
   }
   return {
     fixtureId: record.fixture.id,
+    kickoffUtc: record.fixture.kickoffUtc,
     homeGoals: record.homeGoals,
     awayGoals: record.awayGoals,
     outcome: outcomeFromGoals(record.homeGoals, record.awayGoals),
