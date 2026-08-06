@@ -85,10 +85,10 @@ Chain strategy: stacked-to-main
 
 ## Slice S3b — Mock source, DI, league smoke (~180, Low risk)
 
-- [ ] 3.9 Create `src/infrastructure/mock/data.ts` (fixtures/teams/results sample) + `source.ts` (mock repos implementing port).
-- [ ] 3.10 Create `src/application/data/ports.ts`: `TeamRepository` / `FixtureRepository` interface + create `src/application/useCases.ts`.
-- [ ] 3.11 Create `src/app/di.ts` source selection: key present→API-Football, else mock; UI layer untouched.
-- [ ] 3.12 Smoke task (runtime): verify league 239 + Apertura/Clausura naming returns teams (record result).
+- [x] 3.9 Create `src/infrastructure/mock/data.ts` (fixtures/teams/results sample) + `source.ts` (mock repos implementing port).
+- [x] 3.10 Create `src/application/data/ports.ts`: `TeamRepository` / `FixtureRepository` interface + create `src/application/useCases.ts`.
+- [x] 3.11 Create `src/app/di.ts` source selection: key present→API-Football, else mock; UI layer untouched.
+- [x] 3.12 Smoke task (runtime): verify league 239 + Apertura/Clausura naming returns teams (record result).
 
 ## Slice S4 — Store, UI screens, composition root (~250, Medium risk)
 
